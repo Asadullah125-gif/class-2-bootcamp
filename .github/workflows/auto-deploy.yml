@@ -1,0 +1,30 @@
+on: 
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    
+jobs:
+  build:
+    runs-on: window
+    
+    steps:
+      - uses: actions/checkout@v-2
+      
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3.5.1
+        with:
+          # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+          node-version: 18
+          
+      - name: creating build
+        run: npm run build
+      
+      - name: Installing surge
+        run : npm install --global surge
+        
+      - name: deploying on surge
+        run : surge ./build http://class-two-bootcamp.surge.sh/ --token @{{secrets.SURGE_TOKEN}}
+        
+        
+          
